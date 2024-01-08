@@ -6,4 +6,5 @@
     <string name="reset">Reset</string>
     <string name="back">Back</string>
     <string name="view_history">View History</string>
+    <string name="save_count">Save count</string>
 </resources>

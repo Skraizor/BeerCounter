@@ -1,46 +1,35 @@
 package com.example.beercounter
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.ListView
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.beercounter.ui.theme.BeerCounterTheme
 
 class HistoryActivity : ComponentActivity() {
+    private lateinit var listView: ListView
+    private lateinit var backButton: Button
+    private lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            BeerCounterTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
+        setContentView(R.layout.activity_history)
+
+        listView = findViewById(R.id.lvHistory)
+        backButton = findViewById(R.id.btnBack)
+        sharedPreferences = getSharedPreferences("BeerTrackerPrefs", MODE_PRIVATE)
+
+        backButton.setOnClickListener {
+            finish()
         }
+
+        loadHistory()
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BeerCounterTheme {
-        Greeting("Android")
+    private fun loadHistory() {
+        val history = sharedPreferences.getStringSet("BeerHistory", setOf()) ?: setOf()
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, history.toList())
+        listView.adapter = adapter
     }
 }
