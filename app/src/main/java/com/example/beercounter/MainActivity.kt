@@ -3,12 +3,16 @@ package com.example.beercounter
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
 
 class MainActivity : ComponentActivity() {
 
@@ -17,6 +21,12 @@ class MainActivity : ComponentActivity() {
     private var historySet: MutableSet<String> = mutableSetOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Since splash screen is handled by OS by default, I at least extended the duration of it
+        var splashScreenStays = true
+        val delayTime = 800L
+        installSplashScreen().setKeepOnScreenCondition { splashScreenStays }
+        Handler(Looper.getMainLooper()).postDelayed({ splashScreenStays = false }, delayTime)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
