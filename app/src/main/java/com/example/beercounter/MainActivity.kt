@@ -1,46 +1,46 @@
 package com.example.beercounter
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.beercounter.ui.theme.BeerCounterTheme
 
 class MainActivity : ComponentActivity() {
+
+    private var beerCount = 0
+    private lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            BeerCounterTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
+        setContentView(R.layout.activity_main)
+
+        sharedPreferences = getSharedPreferences("BeerTrackerPrefs", MODE_PRIVATE)
+        beerCount = sharedPreferences.getInt("BeerCount", 0)
+
+        val tvBeerCount: TextView = findViewById(R.id.tvBeerCount)
+        val btnAddBeer: Button = findViewById(R.id.btnAddBeer)
+        val btnReset: Button = findViewById(R.id.btnReset)
+
+        tvBeerCount.text = beerCount.toString()
+
+        btnAddBeer.setOnClickListener {
+            beerCount++
+            tvBeerCount.text = beerCount.toString()
+            saveBeerCount()
+        }
+
+        btnReset.setOnClickListener {
+            beerCount = 0
+            tvBeerCount.text = beerCount.toString()
+            saveBeerCount()
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BeerCounterTheme {
-        Greeting("Android")
+    private fun saveBeerCount() {
+        with(sharedPreferences.edit()) {
+            putInt("BeerCount", beerCount)
+            apply()
+        }
     }
 }
