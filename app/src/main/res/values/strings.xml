@@ -4,4 +4,6 @@
     <string name="_0">0</string>
     <string name="add_a_beer">Add a Beer</string>
     <string name="reset">Reset</string>
+    <string name="back">Back</string>
+    <string name="view_history">View History</string>
 </resources>

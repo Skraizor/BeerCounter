@@ -1,5 +1,6 @@
 package com.example.beercounter
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
@@ -21,6 +22,7 @@ class MainActivity : ComponentActivity() {
         val tvBeerCount: TextView = findViewById(R.id.tvBeerCount)
         val btnAddBeer: Button = findViewById(R.id.btnAddBeer)
         val btnReset: Button = findViewById(R.id.btnReset)
+        val btnViewHistory: Button = findViewById(R.id.btnViewHistory)
 
         tvBeerCount.text = beerCount.toString()
 
@@ -34,6 +36,11 @@ class MainActivity : ComponentActivity() {
             beerCount = 0
             tvBeerCount.text = beerCount.toString()
             saveBeerCount()
+        }
+
+        btnViewHistory.setOnClickListener {
+            val intent = Intent(this, HistoryActivity::class.java)
+            startActivity(intent)
         }
     }
 
